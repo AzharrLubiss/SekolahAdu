@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Complaint;
+
 
 class ComplaintController extends Controller
 {
@@ -11,7 +14,14 @@ class ComplaintController extends Controller
      */
     public function index()
     {
-        //
+        $complaints = Auth::user()->complaints()->latest()->get();
+        return view('complaints.index', compact('complaints'));
+    }
+
+    public function adminIndex()
+    {
+        $complaints = Complaint::with('user')->latest()->get();
+        return view('admin.complaints.index', compact('complaints'));
     }
 
     /**
