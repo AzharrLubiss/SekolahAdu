@@ -27,7 +27,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'is.admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return view('admin.dashboard');
     })->name('dashboard');
 
     // Admin bisa akses semua complaint untuk dikelola
