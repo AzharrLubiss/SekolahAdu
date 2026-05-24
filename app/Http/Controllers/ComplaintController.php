@@ -12,9 +12,21 @@ class ComplaintController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $complaints = Auth::user()->complaints()->latest()->get();
+        $query = auth()->user()->complaints();
+
+        // Search
+        if ($request->has('search') && $request->search != '') {
+            $query->where('judul', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by status
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        $complaints = $query->latest()->paginate(1);
         return view('complaints.index', compact('complaints'));
     }
 
